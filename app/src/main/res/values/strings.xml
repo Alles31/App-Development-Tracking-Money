@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Pocket Tracker</string>
+    <string name="nilai_nol">Rp0</string>
+    <string name="total_pemasukan">Pemasukan</string>
+    <string name="total_pengeluaran">Pengeluaran</string>
+    <string name="label_keterangan">Judul</string>
+    <string name="hint_keterangan">cth. jajan</string>
+    <string name="label_nominal">Nominal</string>
+    <string name="hint_nominal">cth 5000</string>
+    <string name="label_tipe">Tipe</string>
+    <string name="tipe_pemasukan">Pemasukan</string>
+    <string name="tipe_pengeluaran">Pengeluaran</string>
+    <string name="label_kategori">Kategori</string>
+    <string name="label_tanggal">Tanggal Aktivitas</string>
+    <string name="tombol_pilih_tanggal">Pilih tanggal</string>
+    <string name="tombol_simpan">Simpan</string>
+    <string name="judul_form_tambah">Transaksi Baru</string>
+    <string-array name="daftar_kategori">
+        <item>Lorem</item>
+        <item>Ipsum</item>
+        <item>Amet</item>
+        <item>Dolor</item>
+        <item>Set</item>
+    </string-array>
+</resources>
