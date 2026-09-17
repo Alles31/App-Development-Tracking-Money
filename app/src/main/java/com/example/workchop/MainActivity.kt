@@ -40,38 +40,79 @@ class MainActivity : AppCompatActivity(){
     private val addLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+
         // Hanya proses jika form ditekan Simpan (RESULT_OK).
         if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data ?: return@registerForActivityResult
+
+            val data = result.data
+                ?: return@registerForActivityResult
 
             // Ambil data yang dikirim balik dari form.
-            val idEdit = data.getIntExtra(AddTransactionActivity.EXTRA_ID, 0)
-            val judul = data.getStringExtra(AddTransactionActivity.EXTRA_JUDUL) ?: ""
-            val nominal = data.getLongExtra(AddTransactionActivity.EXTRA_NOMINAL, 0)
-            val tipe = data.getStringExtra(AddTransactionActivity.EXTRA_TIPE) ?: "Pengeluaran"
-            val kategori = data.getStringExtra(AddTransactionActivity.EXTRA_KATEGORI) ?: "Lainnya"
-            // Tanggal/jam yang dipilih user di form (default: sekarang).
+            val idEdit = data.getIntExtra(
+                AddTransactionActivity.EXTRA_ID,
+                0
+            )
+
+            val judul = data.getStringExtra(
+                AddTransactionActivity.EXTRA_JUDUL
+            ) ?: ""
+
+            val nominal = data.getLongExtra(
+                AddTransactionActivity.EXTRA_NOMINAL,
+                0
+            )
+
+            val tipe = data.getStringExtra(
+                AddTransactionActivity.EXTRA_TIPE
+            ) ?: "Pengeluaran"
+
+            val kategori = data.getStringExtra(
+                AddTransactionActivity.EXTRA_KATEGORI
+            ) ?: "Lainnya"
+
+            // Tanggal/jam yang dipilih user di form.
             val tanggal = data.getLongExtra(
-                AddTransactionActivity.EXTRA_TANGGAL, System.currentTimeMillis()
+                AddTransactionActivity.EXTRA_TANGGAL,
+                System.currentTimeMillis()
             )
 
-            // Buat objek transaksi baru, masukkan ke awal list.
-            val transaksi = Transaction(
-                id = 0,
-                title = judul,
-                amount = nominal,
-                type = tipe,
-                category = kategori,
-                date = tanggal
-            )
-
-//            daftarTransaksi.add(0, transaksi)
             lifecycleScope.launch {
-                transactionDao.insert(transaksi)
-            }
 
-            // Beri tahu adapter agar RecyclerView memperbarui tampilan.
-            adapter.notifyItemInserted(0)
+                if (idEdit == 0) {
+
+                    // =========================
+                    // TAMBAH TRANSAKSI BARU
+                    // =========================
+
+                    val transaksi = Transaction(
+                        id = 0,
+                        title = judul,
+                        amount = nominal,
+                        type = tipe,
+                        category = kategori,
+                        date = tanggal
+                    )
+
+                    transactionDao.insert(transaksi)
+
+                } else {
+
+                    // =========================
+                    // EDIT TRANSAKSI
+                    // =========================
+
+                    val transaksi = Transaction(
+                        id = idEdit,
+                        title = judul,
+                        amount = nominal,
+                        type = tipe,
+                        category = kategori,
+                        date = tanggal
+                    )
+
+                    transactionDao.update(transaksi)
+                }
+            }
         }
     }
 
