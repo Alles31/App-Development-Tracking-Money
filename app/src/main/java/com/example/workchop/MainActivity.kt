@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity(){
             .getInstance(this@MainActivity).transactionDao()
         // Siapkan RecyclerView: susun item vertikal + pasang adapter.
         val recycler = findViewById<RecyclerView>(R.id.recyclerViewTransaksi)
-        adapter = TransactionAdapter(daftarTransaksi, onClick = { formEdit(it)} )
+        adapter = TransactionAdapter(daftarTransaksi, onClick = { formEdit(it)}, onDeleteClick = { tampilkanDialogHapus(it) } )
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
@@ -174,6 +175,19 @@ class MainActivity : AppCompatActivity(){
             putExtra(EXTRA_TANGGAL, transaksi.date)
         }
         addLauncher.launch(intent)
+    }
+
+    private fun tampilkanDialogHapus(transaksi: Transaction) {
+        AlertDialog.Builder(this)
+            .setTitle("Hapus Transaksi?")
+            .setMessage("Transaksi \"${transaksi.title}\" akan dihapus secara permanen")
+            .setNegativeButton("Batal", null)
+            .setPositiveButton("Hapus") { _, _ ->
+                lifecycleScope.launch {
+                    transactionDao.delete(transaksi)
+                }
+            }
+            .show()
     }
 }
 

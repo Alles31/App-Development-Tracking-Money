@@ -3,6 +3,7 @@ package com.example.workchop
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workchop.Transaction
@@ -20,6 +21,7 @@ import com.example.workchop.Transaction
 class TransactionAdapter(
     private var daftar: List<Transaction>,
     private var onClick: (Transaction) -> Unit,
+    private var onDeleteClick: (Transaction) -> Unit,
 ) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     /**
@@ -31,6 +33,7 @@ class TransactionAdapter(
         val textKategori: TextView = view.findViewById(R.id.textKategori)
         val textTanggal: TextView = view.findViewById(R.id.textTanggal)
         val textNominal: TextView = view.findViewById(R.id.textNominal)
+        val btnDelete: ImageButton = view.findViewById(R.id.btnDelete)
     }
 
     // Membuat baris baru dari layout item_transaction.xml.
@@ -67,6 +70,10 @@ class TransactionAdapter(
 
         holder.itemView.setOnClickListener {
             onClick(transaksi)
+        }
+
+        holder.btnDelete.setOnClickListener {
+            onDeleteClick(transaksi)
         }
     }
 
